@@ -1,5 +1,24 @@
 console.log("hello");
 
+const html = `<div class="user">
+              <div class="user-info">
+                <div class="name">{{name}}</div>
+                <div class="surname">{{surname}}</div>
+                <div class="amount">$ {{amount}}</div>
+              </div>
+              <div>
+                <button type="button" value="{{id}}" class="green --deposit">
+                  Deposit
+                </button>
+                <button type="button" value="{{id}}" class="yellow --withdraw">
+                  Withdraw
+                </button>
+                <button type="button" value="{{id}}" class="red --delete">
+                  Delete
+                </button>
+              </div>
+            </div>`;
+
 window.addEventListener("load", () => {
   // keys for local storage
   const LAST_ID_LS = "userLastSavedId";
@@ -10,6 +29,7 @@ window.addEventListener("load", () => {
   const createModal = document.querySelector(".modal--create");
   const storeButton = createModal.querySelector(".--submit");
   const createButton = document.querySelector(".--create");
+  const listHtml = document.querySelector(".--list");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -25,14 +45,85 @@ window.addEventListener("load", () => {
     return parseInt(id) + 1;
   };
 
+  // writes data to local storage
+  const write = (data) => {
+    localStorage.setItem(USERS_LS, JSON.stringify(data));
+  };
+  // reads from local storage
+  const read = () => {
+    const data = localStorage.getItem(USERS_LS);
+    //return empty array is there is no users
+    if (null === data) {
+      return [];
+    }
+    // parse data before sorting
+    const sortedItems = JSON.parse(data).sort(compareBySurname);
+    return sortedItems;
+  };
+
+  const compareBySurname = (a, b) => {
+    // Convert names to lowercase for case-insensitive sorting
+    const nameA = a.holderSurname.toLowerCase();
+    const nameB = b.holderSurname.toLowerCase();
+
+    // Compare the names
+    if (nameA < nameB) {
+      return -1; // Name A comes before name B
+    }
+    if (nameA > nameB) {
+      return 1; // Name A comes after name B
+    }
+    return 0; // Names are equal
+  };
+
   //opens modal
   const showModal = (modal) => (modal.style.display = "flex");
 
+  //hides modal
   const hideModal = (modal) => {
     modal.querySelectorAll("[name]").forEach((i) => {
       i.value = "";
     });
     modal.style.display = "none";
+  };
+
+  const showList = (_) => {
+    let usersHtml = "";
+    read().forEach((u) => {
+      let temp = html;
+      temp = temp.replaceAll("{{name}}", u.holderName);
+      temp = temp.replaceAll("{{surname}}", u.holderSurname);
+      temp = temp.replaceAll("{{amount}}", u.amount);
+      usersHtml += temp;
+    });
+    listHtml.innerHTML = usersHtml;
+  };
+
+  const storeData = (data) => {
+    const storeData = read();
+    data.id = getId();
+    data.amount = 0; // set amount to 0
+    storeData.push(data);
+
+    write(storeData);
+  };
+
+  //CRUD
+  // reads all data
+  const getDataFromForm = (form) => {
+    const data = {};
+    form.querySelectorAll("[name]").forEach((i) => {
+      data[i.getAttribute("name")] = i.value;
+    });
+
+    return data;
+  };
+  // stores data
+  const store = () => {
+    const data = getDataFromForm(createModal);
+    storeData(data);
+    hideModal(createModal);
+    showList();
   };
 
   //Events
@@ -42,6 +133,11 @@ window.addEventListener("load", () => {
       hideModal(b.closest(".--modal"));
     });
   });
-  // opens
+  // on button click opens create modal
   createButton.addEventListener("click", () => showModal(createModal));
+  // stores data to LS
+  storeButton.addEventListener("click", () => store());
+
+  showList();
+  // setTimeout((_) => showList(), 2000);
 });

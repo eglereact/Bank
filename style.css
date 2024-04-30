@@ -7,9 +7,17 @@
 
 .main-container {
   width: 100%;
-  position: relative;
+  /* position: relative; */
   background-color: #f3f6fc;
   height: 100vh;
+}
+
+.users {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 20px;
 }
 
 .modal {
@@ -34,7 +42,6 @@
   border-radius: 10px;
   justify-content: space-between;
 }
-
 .card-top {
   display: flex;
   justify-content: space-between;
@@ -54,6 +61,8 @@
   border: none;
   color: #404a60;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
 }
 
 .input {
@@ -87,11 +96,10 @@
   border: none;
   border: 1px solid #20b757;
   font-size: 1rem;
-  margin: 20px;
   display: flex;
   gap: 6px;
   transition: all 0.3s ease-in-out;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .account-submit-btn {
@@ -112,4 +120,99 @@
   color: #20b757;
   border: 1px solid #20b757;
   cursor: pointer;
+}
+
+.list-container {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 20px;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.user {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding: 0 20px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.first {
+  background-color: #f5f8fe;
+}
+
+.user:nth-child(even) {
+  background-color: #f5f8fe;
+}
+
+/* .user:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+} */
+
+.user-info {
+  display: flex;
+}
+
+.name,
+.surname,
+.amount {
+  width: 200px;
+  margin-left: 20px;
+  color: #404a60;
+  font-size: 16px;
+}
+
+.green,
+.red,
+.yellow {
+  border: none;
+  padding: 5px 30px;
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid #f0f0f0;
+  margin-left: 10px;
+}
+
+.green {
+  background-color: #e8f8ee;
+  color: #20b757;
+  border: 1px solid #20b757;
+}
+
+.green:hover {
+  background-color: #20b75798;
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
+
+.red {
+  background-color: #f6e9ee;
+  color: #fe7070;
+  border: 1px solid #fe7070;
+}
+
+.red:hover {
+  background-color: #f119199f;
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
+
+.yellow {
+  background-color: #f8f2e5;
+  color: #cd9b3f;
+  border: 1px solid #cd9b3f;
+}
+
+.yellow:hover {
+  background-color: #cd9b3f;
+  color: #ffffff;
 }

@@ -1,5 +1,3 @@
-console.log("hello");
-
 const html = `<div class="user">
               <div class="user-info">
                 <div class="name">{{name}}</div>
@@ -23,6 +21,7 @@ window.addEventListener("load", () => {
   // keys for local storage
   const LAST_ID_LS = "userLastSavedId";
   const USERS_LS = "usersList";
+  let destroyId = 0;
 
   // select elements
   const closeButtons = document.querySelectorAll(".--close");
@@ -30,6 +29,8 @@ window.addEventListener("load", () => {
   const storeButton = createModal.querySelector(".--submit");
   const createButton = document.querySelector(".--create");
   const listHtml = document.querySelector(".--list");
+  const deleteModal = document.querySelector(".modal--delete");
+  const deleteButton = deleteModal.querySelector(".--submit");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -87,18 +88,6 @@ window.addEventListener("load", () => {
     modal.style.display = "none";
   };
 
-  const showList = (_) => {
-    let usersHtml = "";
-    read().forEach((u) => {
-      let temp = html;
-      temp = temp.replaceAll("{{name}}", u.holderName);
-      temp = temp.replaceAll("{{surname}}", u.holderSurname);
-      temp = temp.replaceAll("{{amount}}", u.amount);
-      usersHtml += temp;
-    });
-    listHtml.innerHTML = usersHtml;
-  };
-
   const storeData = (data) => {
     const storeData = read();
     data.id = getId();
@@ -106,6 +95,32 @@ window.addEventListener("load", () => {
     storeData.push(data);
 
     write(storeData);
+  };
+
+  const destroyData = (id) => {
+    const data = read();
+    const deleteData = data.filter((d) => d.id != id);
+    write(deleteData);
+  };
+
+  const showList = () => {
+    let usersHtml = "";
+    read().forEach((u) => {
+      let temp = html;
+      temp = temp.replaceAll("{{id}}", u.id);
+      temp = temp.replaceAll("{{name}}", u.holderName);
+      temp = temp.replaceAll("{{surname}}", u.holderSurname);
+      temp = temp.replaceAll("{{amount}}", u.amount);
+      usersHtml += temp;
+    });
+    listHtml.innerHTML = usersHtml;
+    registerDelete();
+  };
+
+  const prepareDeleteModal = (id) => {
+    const name = read().find((p) => p.id == id).holderName;
+    const surname = read().find((p) => p.id == id).holderSurname;
+    deleteModal.querySelector(".user--title").innerText = `${name} ${surname}`;
   };
 
   //CRUD
@@ -125,8 +140,24 @@ window.addEventListener("load", () => {
     hideModal(createModal);
     showList();
   };
+  //deletes user
+  const destroy = () => {
+    destroyData(destroyId); //LS
+    hideModal(deleteModal);
+    showList();
+  };
 
   //Events
+  // finds all deletes buttons and deletes right one
+  const registerDelete = () => {
+    document.querySelectorAll(".--delete").forEach((b) => {
+      b.addEventListener("click", () => {
+        showModal(deleteModal);
+        prepareDeleteModal(b.value);
+        destroyId = parseInt(b.value);
+      });
+    });
+  };
   // find right modal to close
   closeButtons.forEach((b) => {
     b.addEventListener("click", () => {
@@ -137,6 +168,8 @@ window.addEventListener("load", () => {
   createButton.addEventListener("click", () => showModal(createModal));
   // stores data to LS
   storeButton.addEventListener("click", () => store());
+  // deletes user
+  deleteButton.addEventListener("click", () => destroy());
 
   showList();
   // setTimeout((_) => showList(), 2000);

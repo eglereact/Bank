@@ -22,6 +22,7 @@ window.addEventListener("load", () => {
   const LAST_ID_LS = "userLastSavedId";
   const USERS_LS = "usersList";
   let destroyId = 0;
+  let addId = 0;
 
   // select elements
   const closeButtons = document.querySelectorAll(".--close");
@@ -31,6 +32,8 @@ window.addEventListener("load", () => {
   const listHtml = document.querySelector(".--list");
   const deleteModal = document.querySelector(".modal--delete");
   const deleteButton = deleteModal.querySelector(".--submit");
+  const depositModal = document.querySelector(".modal--deposit");
+  const depositButton = depositModal.querySelector(".--submit");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -102,6 +105,11 @@ window.addEventListener("load", () => {
     const deleteData = data.filter((d) => d.id != id);
     write(deleteData);
   };
+  //LS
+  const updateData = (id, data) => {
+    const updateData = read().map((p) => (p.id == id ? { ...data, id } : p));
+    write(updateData);
+  };
 
   const showList = () => {
     let usersHtml = "";
@@ -115,12 +123,19 @@ window.addEventListener("load", () => {
     });
     listHtml.innerHTML = usersHtml;
     registerDelete();
+    registerDeposit();
   };
 
   const prepareDeleteModal = (id) => {
     const name = read().find((p) => p.id == id).holderName;
     const surname = read().find((p) => p.id == id).holderSurname;
     deleteModal.querySelector(".user--title").innerText = `${name} ${surname}`;
+  };
+
+  const prepareDepositModal = (id) => {
+    const name = read().find((p) => p.id == id).holderName;
+    const surname = read().find((p) => p.id == id).holderSurname;
+    depositModal.querySelector(".user--title").innerText = `${name} ${surname}`;
   };
 
   //CRUD
@@ -147,6 +162,17 @@ window.addEventListener("load", () => {
     showList();
   };
 
+  // adds money
+  const deposit = () => {
+    const users = read(); // finds all users in ls
+    const user = users.find((p) => p.id == addId); // finds right user
+    const input = document.querySelector("input[name='addAmount']").value; // input amount
+    user.amount += parseFloat(input); // adds input value to user amount
+    updateData(addId, user);
+    hideModal(depositModal);
+    showList();
+  };
+
   //Events
   // finds all deletes buttons and deletes right one
   const registerDelete = () => {
@@ -155,6 +181,16 @@ window.addEventListener("load", () => {
         showModal(deleteModal);
         prepareDeleteModal(b.value);
         destroyId = parseInt(b.value);
+      });
+    });
+  };
+
+  const registerDeposit = () => {
+    document.querySelectorAll(".--deposit").forEach((b) => {
+      b.addEventListener("click", () => {
+        showModal(depositModal);
+        prepareDepositModal(b.value);
+        addId = parseInt(b.value);
       });
     });
   };
@@ -170,6 +206,8 @@ window.addEventListener("load", () => {
   storeButton.addEventListener("click", () => store());
   // deletes user
   deleteButton.addEventListener("click", () => destroy());
+  //opens deposit modal and adds money
+  depositButton.addEventListener("click", () => deposit());
 
   showList();
   // setTimeout((_) => showList(), 2000);

@@ -47,6 +47,10 @@
   min-width: 500px;
   min-height: 220px;
 }
+.card-deposit {
+  min-width: 500px;
+  min-height: 250px;
+}
 .card-top {
   display: flex;
   justify-content: space-between;
@@ -82,7 +86,8 @@
   margin-bottom: 10px;
 }
 
-.input input {
+.input input,
+.deposit-input input {
   width: 100%;
   padding: 14px 20px;
   border-radius: 20px;
@@ -91,6 +96,10 @@
   border: 1px solid #ebecef;
   outline: none;
   font-size: 16px;
+}
+
+.deposit-input {
+  padding: 0 10px;
 }
 
 .create-btn {
@@ -218,7 +227,8 @@
   color: #ffffff;
 }
 
-.delete-question {
+.delete-question,
+.deposit-question {
   font-size: 17px;
   font-weight: 500;
   margin-left: 20px;
@@ -235,14 +245,16 @@
   font-weight: 700;
 }
 
-.buttons-delete {
+.buttons-delete,
+.buttons-deposit {
   display: flex;
   justify-content: flex-end;
   padding: 20px;
   gap: 20px;
 }
 
-.buttons-delete button {
+.buttons-delete button,
+.buttons-deposit button {
   padding: 8px 15px;
   border: none;
   border-radius: 7px;
@@ -250,20 +262,28 @@
   font-weight: 700;
 }
 
-.delete-no {
+.delete-no,
+.deposit-yes {
   background-color: #20b757;
   color: #ffffff;
 }
 
-.delete-no:hover {
+.delete-no:hover,
+.deposit-yes:hover {
   background-color: #167f3cce;
 }
 
-.delete-yes {
+.delete-yes,
+.deposit-no {
   background-color: #fe7070;
   color: #ffffff;
 }
 
-.delete-yes:hover {
+.delete-yes:hover,
+.deposit-no:hover {
   background-color: #cd3e3e;
+}
+
+.user--title {
+  text-transform: capitalize;
 }

@@ -129,24 +129,11 @@ window.addEventListener("load", () => {
     registerWithdraw();
   };
 
-  const prepareDeleteModal = (id) => {
-    const name = read().find((p) => p.id == id).holderName;
-    const surname = read().find((p) => p.id == id).holderSurname;
-    deleteModal.querySelector(".user--title").innerText = `${name} ${surname}`;
-  };
-
-  const prepareDepositModal = (id) => {
-    const name = read().find((p) => p.id == id).holderName;
-    const surname = read().find((p) => p.id == id).holderSurname;
-    depositModal.querySelector(".user--title").innerText = `${name} ${surname}`;
-  };
-
-  const prepareWithdrawModal = (id) => {
-    const name = read().find((p) => p.id == id).holderName;
-    const surname = read().find((p) => p.id == id).holderSurname;
-    withdrawModal.querySelector(
-      ".user--title"
-    ).innerText = `${name} ${surname}`;
+  const prepareModal = (modal, id) => {
+    const user = read().find((p) => p.id == id);
+    const name = user.holderName;
+    const surname = user.holderSurname;
+    modal.querySelector(".user--title").innerText = `${name} ${surname}`;
   };
 
   //CRUD
@@ -201,7 +188,7 @@ window.addEventListener("load", () => {
     document.querySelectorAll(".--delete").forEach((b) => {
       b.addEventListener("click", () => {
         showModal(deleteModal);
-        prepareDeleteModal(b.value);
+        prepareModal(deleteModal, b.value);
         destroyId = parseInt(b.value);
       });
     });
@@ -211,7 +198,7 @@ window.addEventListener("load", () => {
     document.querySelectorAll(".--deposit").forEach((b) => {
       b.addEventListener("click", () => {
         showModal(depositModal);
-        prepareDepositModal(b.value);
+        prepareModal(depositModal, b.value);
         addId = parseInt(b.value);
       });
     });
@@ -221,7 +208,7 @@ window.addEventListener("load", () => {
     document.querySelectorAll(".--withdraw").forEach((b) => {
       b.addEventListener("click", () => {
         showModal(withdrawModal);
-        prepareWithdrawModal(b.value);
+        prepareModal(withdrawModal, b.value);
         addId = parseInt(b.value);
       });
     });

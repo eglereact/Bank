@@ -42,6 +42,11 @@
   border-radius: 10px;
   justify-content: space-between;
 }
+
+.card-delete {
+  min-width: 500px;
+  min-height: 220px;
+}
 .card-top {
   display: flex;
   justify-content: space-between;
@@ -153,11 +158,6 @@
   background-color: #f5f8fe;
 }
 
-/* .user:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-} */
-
 .user-info {
   display: flex;
 }
@@ -169,6 +169,7 @@
   margin-left: 20px;
   color: #404a60;
   font-size: 16px;
+  text-transform: capitalize;
 }
 
 .green,
@@ -215,4 +216,54 @@
 .yellow:hover {
   background-color: #cd9b3f;
   color: #ffffff;
+}
+
+.delete-question {
+  font-size: 17px;
+  font-weight: 500;
+  margin-left: 20px;
+  color: #404a60;
+}
+
+.delete-span {
+  color: #fe7070;
+  font-weight: 700;
+}
+
+.user-name {
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.buttons-delete {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  gap: 20px;
+}
+
+.buttons-delete button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.delete-no {
+  background-color: #20b757;
+  color: #ffffff;
+}
+
+.delete-no:hover {
+  background-color: #167f3cce;
+}
+
+.delete-yes {
+  background-color: #fe7070;
+  color: #ffffff;
+}
+
+.delete-yes:hover {
+  background-color: #cd3e3e;
 }

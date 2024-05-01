@@ -61,15 +61,18 @@
       </div>
 
       <div class="modal modal--delete --modal">
-        <div class="card">
-          <h2>Delete</h2>
-          <h2>
-            Are you sure want to delete account of
-            <span class="user--title"></span>?
+        <div class="card card-delete">
+          <div class="card-top">
+            <h2>Are you sure?</h2>
+            <button class="cancel-btn --close">X</button>
+          </div>
+          <h2 class="delete-question">
+            Are you sure want to <span class="delete-span">delete</span> account
+            of <span class="user--title user-name"></span>?
           </h2>
-          <div class="buttons">
-            <button type="button" class="greennn --submit">Yes</button>
-            <button type="button" class="gray --close">Cancel</button>
+          <div class="buttons-delete">
+            <button type="button" class="delete-yes --submit">Yes</button>
+            <button type="button" class="delete-no --close">No</button>
           </div>
         </div>
       </div>

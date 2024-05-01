@@ -124,9 +124,9 @@ window.addEventListener("load", () => {
       usersHtml += temp;
     });
     listHtml.innerHTML = usersHtml;
-    registerDelete();
-    registerDeposit();
-    registerWithdraw();
+    registerAction(deleteModal, "delete");
+    registerAction(depositModal, "deposit");
+    registerAction(withdrawModal, "withdraw");
   };
 
   const prepareModal = (modal, id) => {
@@ -160,59 +160,38 @@ window.addEventListener("load", () => {
     showList();
   };
 
-  // adds money
-  const deposit = () => {
+  const performTransaction = (actionType) => {
     const users = read(); // finds all users in ls
     const user = users.find((p) => p.id == addId); // finds right user
-    const input = document.querySelector("input[name='addAmount']").value; // input amount
-    user.amount += parseFloat(input); // adds input value to user amount
+    const input = document.querySelector(
+      `input[name='${actionType}Amount']`
+    ).value; // input amount
+    if (actionType === "deposit") {
+      user.amount += parseFloat(input); // adds input value to user amount
+    } else if (actionType === "withdraw") {
+      user.amount -= parseFloat(input); // withdraws input value to user amount
+    }
     updateData(addId, user);
-    hideModal(depositModal);
-    showList();
-  };
-
-  // withdraw money
-  const withdraw = () => {
-    const users = read(); // finds all users in ls
-    const user = users.find((p) => p.id == addId); // finds right user
-    const input = document.querySelector("input[name='withdrawAmount']").value; // input amount
-    user.amount -= parseFloat(input); // withdraws input value to user amount
-    updateData(addId, user);
-    hideModal(withdrawModal);
+    hideModal(actionType === "deposit" ? depositModal : withdrawModal);
     showList();
   };
 
   //Events
-  // finds all deletes buttons and deletes right one
-  const registerDelete = () => {
-    document.querySelectorAll(".--delete").forEach((b) => {
+  //
+  const registerAction = (actionModal, actionType) => {
+    document.querySelectorAll(`.--${actionType}`).forEach((b) => {
       b.addEventListener("click", () => {
-        showModal(deleteModal);
-        prepareModal(deleteModal, b.value);
-        destroyId = parseInt(b.value);
+        showModal(actionModal);
+        prepareModal(actionModal, b.value);
+        if (actionType === "delete") {
+          destroyId = parseInt(b.value);
+        } else {
+          addId = parseInt(b.value);
+        }
       });
     });
   };
 
-  const registerDeposit = () => {
-    document.querySelectorAll(".--deposit").forEach((b) => {
-      b.addEventListener("click", () => {
-        showModal(depositModal);
-        prepareModal(depositModal, b.value);
-        addId = parseInt(b.value);
-      });
-    });
-  };
-
-  const registerWithdraw = () => {
-    document.querySelectorAll(".--withdraw").forEach((b) => {
-      b.addEventListener("click", () => {
-        showModal(withdrawModal);
-        prepareModal(withdrawModal, b.value);
-        addId = parseInt(b.value);
-      });
-    });
-  };
   // find right modal to close
   closeButtons.forEach((b) => {
     b.addEventListener("click", () => {
@@ -226,9 +205,11 @@ window.addEventListener("load", () => {
   // deletes user
   deleteButton.addEventListener("click", () => destroy());
   //opens deposit modal and adds money
-  depositButton.addEventListener("click", () => deposit());
+  depositButton.addEventListener("click", () => performTransaction("deposit"));
   // opens withdraw button and withdraws money
-  withdrawButton.addEventListener("click", () => withdraw());
+  withdrawButton.addEventListener("click", () =>
+    performTransaction("withdraw")
+  );
 
   showList();
   // setTimeout((_) => showList(), 2000);

@@ -36,6 +36,9 @@ window.addEventListener("load", () => {
   const depositButton = depositModal.querySelector(".--submit");
   const withdrawModal = document.querySelector(".modal--withdraw");
   const withdrawButton = withdrawModal.querySelector(".--submit");
+  //extra
+  const totalAmount = document.querySelector(".total--amount");
+  const totalUsers = document.querySelector(".total--users");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -127,13 +130,29 @@ window.addEventListener("load", () => {
     registerAction(deleteModal, "delete");
     registerAction(depositModal, "deposit");
     registerAction(withdrawModal, "withdraw");
+    countTotalSum();
+    countTotalUsers();
   };
-
+  // shows in modal users name and surname
   const prepareModal = (modal, id) => {
     const user = read().find((p) => p.id == id);
     const name = user.holderName;
     const surname = user.holderSurname;
     modal.querySelector(".user--title").innerText = `${name} ${surname}`;
+  };
+  // counts how many users in the list
+  const countTotalUsers = () => {
+    const data = read();
+    totalUsers.innerText = data.length;
+  };
+  // counts total amount of all users
+  const countTotalSum = () => {
+    const data = read();
+    let total = 0;
+    data.forEach((u) => {
+      total += u.amount;
+    });
+    totalAmount.innerText = `$ ${total}`;
   };
 
   //CRUD

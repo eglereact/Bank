@@ -376,6 +376,7 @@ body {
   position: absolute;
   top: 110px;
   right: 192px;
+  z-index: 100;
 }
 .alert-danger {
   color: #fe7070;

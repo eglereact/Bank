@@ -164,7 +164,7 @@ window.addEventListener("load", () => {
     setTimeout(function () {
       alert.textContent = "";
       alert.classList.remove(`alert-${action}`);
-    }, 3000);
+    }, 2000);
   };
 
   //CRUD
@@ -191,13 +191,20 @@ window.addEventListener("load", () => {
   //deletes user
   const destroy = () => {
     const user = read().find((p) => p.id == destroyId);
-    destroyData(destroyId); //LS
-    hideModal(deleteModal);
+    if (user.amount == 0) {
+      destroyData(destroyId); //LS
+      hideModal(deleteModal);
+      displayAlert(
+        `The user named ${user.holderName} ${user.holderSurname} was deleted successfully`,
+        "success"
+      );
+    } else {
+      displayAlert(
+        `Please withdraw the funds before proceeding with deletion.`,
+        "danger"
+      );
+    }
     showList();
-    displayAlert(
-      `The user named ${user.holderName} ${user.holderSurname} was deleted successfully`,
-      "success"
-    );
   };
 
   const performTransaction = (actionType) => {
@@ -208,17 +215,31 @@ window.addEventListener("load", () => {
     ).value; // input amount
     if (actionType === "deposit") {
       user.amount += parseFloat(input); // adds input value to user amount
+      hideModal(depositModal);
+      displayAlert(
+        `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`,
+        "success"
+      );
     } else if (actionType === "withdraw") {
-      user.amount -= parseFloat(input); // withdraws input value to user amount
+      if (user.amount >= input) {
+        user.amount -= parseFloat(input); // withdraws input value to user amount
+        hideModal(withdrawModal);
+        displayAlert(
+          `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
+          "success"
+        );
+      } else {
+        displayAlert(`Insufficient Funds.`, "danger");
+      }
     }
     updateData(addId, user);
-    hideModal(actionType === "deposit" ? depositModal : withdrawModal);
-    displayAlert(
-      actionType === "deposit"
-        ? `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`
-        : `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
-      "success"
-    );
+    //hideModal(actionType === "deposit" ? depositModal : withdrawModal);
+    // displayAlert(
+    //   actionType === "deposit"
+    //     ? `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`
+    //     : `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
+    //   "success"
+    // );
     showList();
   };
 

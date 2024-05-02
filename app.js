@@ -39,6 +39,7 @@ window.addEventListener("load", () => {
   //extra
   const totalAmount = document.querySelector(".total--amount");
   const totalUsers = document.querySelector(".total--users");
+  const alert = document.querySelector(".alert");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -155,6 +156,17 @@ window.addEventListener("load", () => {
     totalAmount.innerText = `$ ${total}`;
   };
 
+  // display alert with message
+  const displayAlert = (text, action) => {
+    alert.textContent = text;
+    alert.classList.add(`alert-${action}`);
+    // remove alert
+    setTimeout(function () {
+      alert.textContent = "";
+      alert.classList.remove(`alert-${action}`);
+    }, 3000);
+  };
+
   //CRUD
   // reads all data
   const getDataFromForm = (form) => {
@@ -171,12 +183,21 @@ window.addEventListener("load", () => {
     storeData(data);
     hideModal(createModal);
     showList();
+    displayAlert(
+      `The user named ${data.holderName} ${data.holderSurname} was created successfully`,
+      "success"
+    );
   };
   //deletes user
   const destroy = () => {
+    const user = read().find((p) => p.id == destroyId);
     destroyData(destroyId); //LS
     hideModal(deleteModal);
     showList();
+    displayAlert(
+      `The user named ${user.holderName} ${user.holderSurname} was deleted successfully`,
+      "success"
+    );
   };
 
   const performTransaction = (actionType) => {
@@ -192,6 +213,12 @@ window.addEventListener("load", () => {
     }
     updateData(addId, user);
     hideModal(actionType === "deposit" ? depositModal : withdrawModal);
+    displayAlert(
+      actionType === "deposit"
+        ? `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`
+        : `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
+      "success"
+    );
     showList();
   };
 

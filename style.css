@@ -363,3 +363,25 @@ body {
   background-color: transparent;
   border: 1px solid #404a60;
 }
+
+.alert {
+  margin-bottom: 1rem;
+  padding: 8px 20px;
+  border-radius: 10px;
+  display: grid;
+  align-items: center;
+  text-align: center;
+  font-size: 1rem;
+  text-transform: capitalize;
+  position: absolute;
+  top: 110px;
+  right: 192px;
+}
+.alert-danger {
+  color: #fe7070;
+  background: #f6e9ee;
+}
+.alert-success {
+  color: #20b757;
+  background: #e8f8ee;
+}

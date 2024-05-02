@@ -210,6 +210,18 @@ window.addEventListener("load", () => {
       });
     });
   };
+  // dev button and seed
+  const devBtn = document.querySelector(".seed");
+
+  const seed = () => {
+    write(seedData);
+    localStorage.setItem(LAST_ID_LS, 10);
+  };
+
+  devBtn.addEventListener("click", () => {
+    seed();
+    showList();
+  });
 
   // find right modal to close
   closeButtons.forEach((b) => {
@@ -233,3 +245,66 @@ window.addEventListener("load", () => {
   showList();
   // setTimeout((_) => showList(), 2000);
 });
+
+const seedData = [
+  {
+    id: 1,
+    holderName: "Dwight",
+    holderSurname: "Fairfield",
+    amount: 50,
+  },
+  {
+    id: 2,
+    holderName: "Meg",
+    holderSurname: "Thomas",
+    amount: 1000,
+  },
+  {
+    id: 3,
+    holderName: "Claudette",
+    holderSurname: "Morel",
+    amount: 3250,
+  },
+  {
+    id: 4,
+    holderName: "Jake",
+    holderSurname: "Park",
+    amount: 10,
+  },
+  {
+    id: 5,
+    holderName: "Nea",
+    holderSurname: "Karlsson",
+    amount: 500,
+  },
+  {
+    id: 6,
+    holderName: "Laurie",
+    holderSurname: "Strode",
+    amount: 10000,
+  },
+  {
+    id: 7,
+    holderName: "Ace",
+    holderSurname: "Visconti",
+    amount: 0,
+  },
+  {
+    id: 8,
+    holderName: "William",
+    holderSurname: "Overbeck",
+    amount: 300,
+  },
+  {
+    id: 9,
+    holderName: "Feng",
+    holderSurname: "Min",
+    amount: 50,
+  },
+  {
+    id: 10,
+    holderName: "David",
+    holderSurname: "King",
+    amount: 14,
+  },
+];

@@ -5,11 +5,14 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  background-color: #f3f6fc;
+}
 .main-container {
   width: 100%;
   /* position: relative; */
   background-color: #f3f6fc;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .users {
@@ -18,6 +21,7 @@
   width: 80%;
   margin: 0 auto;
   padding-top: 20px;
+  margin-bottom: 20px;
 }
 
 .modal {
@@ -163,6 +167,11 @@
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-items {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
@@ -334,4 +343,23 @@
 
 .user--title {
   text-transform: capitalize;
+}
+
+.seed {
+  font-size: 16px;
+  color: #404a60;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  border: 1px solid #ffffff;
+}
+
+.seed:hover {
+  background-color: transparent;
+  border: 1px solid #404a60;
 }

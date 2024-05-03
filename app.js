@@ -42,6 +42,8 @@ window.addEventListener("load", () => {
   const alert = document.querySelector(".alert");
   const validation = document.querySelector(".number--validation");
   const validation2 = document.querySelector(".number--validation2");
+  const validation3 = document.querySelector(".number--validation3");
+  const validation4 = document.querySelector(".number--validation4");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -178,12 +180,33 @@ window.addEventListener("load", () => {
     form.querySelectorAll("[name]").forEach((i) => {
       data[i.getAttribute("name")] = i.value;
     });
-
     return data;
   };
+
   // stores data
   const store = () => {
     const data = getDataFromForm(createModal);
+    const { holderName, holderSurname } = data;
+    // Check if holderName is empty
+    if (!holderName) {
+      validation3.innerText = "Please enter a name.";
+      setTimeout(() => {
+        validation3.innerText = "";
+      }, 2000);
+    }
+
+    // Check if holderSurname is empty
+    if (!holderSurname) {
+      validation4.innerText = "Please enter a surname.";
+      setTimeout(() => {
+        validation4.innerText = "";
+      }, 2000);
+    }
+
+    // If any required field is empty, stop further execution
+    if (!holderSurname || !holderName) {
+      return;
+    }
     storeData(data);
     hideModal(createModal);
     showList();

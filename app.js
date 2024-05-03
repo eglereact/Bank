@@ -233,13 +233,6 @@ window.addEventListener("load", () => {
       }
     }
     updateData(addId, user);
-    //hideModal(actionType === "deposit" ? depositModal : withdrawModal);
-    // displayAlert(
-    //   actionType === "deposit"
-    //     ? `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`
-    //     : `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
-    //   "success"
-    // );
     showList();
   };
 
@@ -290,8 +283,8 @@ window.addEventListener("load", () => {
     performTransaction("withdraw")
   );
 
-  showList();
-  // setTimeout((_) => showList(), 2000);
+  // showList();
+  setTimeout((_) => showList(), 2000);
 });
 
 const seedData = [

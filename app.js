@@ -40,6 +40,8 @@ window.addEventListener("load", () => {
   const totalAmount = document.querySelector(".total--amount");
   const totalUsers = document.querySelector(".total--users");
   const alert = document.querySelector(".alert");
+  const validation = document.querySelector(".number--validation");
+  const validation2 = document.querySelector(".number--validation2");
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -95,6 +97,8 @@ window.addEventListener("load", () => {
       i.value = "";
     });
     modal.style.display = "none";
+    validation.innerText = "";
+    validation2.innerText = "";
   };
 
   const storeData = (data) => {
@@ -210,30 +214,44 @@ window.addEventListener("load", () => {
   const performTransaction = (actionType) => {
     const users = read(); // finds all users in ls
     const user = users.find((p) => p.id == addId); // finds right user
-    const input = document.querySelector(
-      `input[name='${actionType}Amount']`
-    ).value; // input amount
-    if (actionType === "deposit") {
-      user.amount += parseFloat(input); // adds input value to user amount
-      hideModal(depositModal);
-      displayAlert(
-        `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`,
-        "success"
-      );
-    } else if (actionType === "withdraw") {
-      if (user.amount >= input) {
-        user.amount -= parseFloat(input); // withdraws input value to user amount
-        hideModal(withdrawModal);
+    const input = parseFloat(
+      document.querySelector(`input[name='${actionType}Amount']`).value
+    ); // input amount
+    if (!isNaN(input)) {
+      if (actionType === "deposit") {
+        user.amount += input; // adds input value to user amount
+        hideModal(depositModal);
+        validation.innerText = "";
         displayAlert(
-          `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
+          `${input}$ was successfully deposited to account of ${user.holderName} ${user.holderSurname}.`,
           "success"
         );
-      } else {
-        displayAlert(`Insufficient Funds.`, "danger");
+      } else if (actionType === "withdraw") {
+        if (user.amount >= input) {
+          user.amount -= input; // withdraws input value to user amount
+          hideModal(withdrawModal);
+          validation2.innerText = "";
+          displayAlert(
+            `${input}$ was successfully withdrawn from the account of ${user.holderName} ${user.holderSurname}.`,
+            "success"
+          );
+        } else {
+          displayAlert(`Insufficient Funds.`, "danger");
+        }
       }
+
+      updateData(addId, user);
+      showList();
+    } else {
+      actionType === "deposit"
+        ? (validation.innerText = "Please enter a valid number.")
+        : (validation2.innerText = "Please enter a valid number.");
+      setTimeout(() => {
+        validation.innerText = "";
+        validation2.innerText = "";
+      }, 2000);
+      // displayAlert(`Please enter a valid number.`, "danger");
     }
-    updateData(addId, user);
-    showList();
   };
 
   //Events
@@ -283,7 +301,7 @@ window.addEventListener("load", () => {
     performTransaction("withdraw")
   );
 
-  // showList();
+  //showList();
   setTimeout((_) => showList(), 2000);
 });
 

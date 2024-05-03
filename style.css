@@ -282,7 +282,7 @@ body {
 .withdraw-question {
   font-size: 17px;
   font-weight: 500;
-  margin-left: 20px;
+  margin: 20px 0 10px 20px;
   color: #404a60;
 }
 
@@ -385,6 +385,13 @@ body {
 .alert-success {
   color: #20b757;
   background: #e8f8ee;
+}
+
+.validation {
+  font-size: 14px;
+  color: #cd3e3e;
+  margin-left: 20px;
+  height: 20px;
 }
 
 /* loader ------------------------------------------------------------------*/

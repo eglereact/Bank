@@ -394,6 +394,43 @@ body {
   height: 20px;
 }
 
+.btn-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.page-btn {
+  width: 2rem;
+  height: 2rem;
+  background: #e8f8ee;
+  border-color: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0.5rem;
+  transition: all 0.3s linear;
+  color: #404a60;
+}
+.active-btn {
+  background: #20b757;
+  color: #ffffff;
+}
+.prev-btn,
+.next-btn {
+  background: transparent;
+  border-color: transparent;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #404a60;
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+  color: #151921;
+}
+
 /* loader ------------------------------------------------------------------*/
 
 .loader-box {

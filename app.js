@@ -44,6 +44,10 @@ window.addEventListener("load", () => {
   const validation2 = document.querySelector(".number--validation2");
   const validation3 = document.querySelector(".number--validation3");
   const validation4 = document.querySelector(".number--validation4");
+  const btnContainer = document.querySelector(".btn-container");
+
+  let index = 0;
+  let pages = [];
 
   // creats new id for a user or gets if created
   const getId = () => {
@@ -123,9 +127,18 @@ window.addEventListener("load", () => {
     write(updateData);
   };
 
-  const showList = () => {
+  const showList = (pageIndex) => {
+    const usersPerPage = 5; // how many uers per page
+    const users = read(); // read all users in the list
+    const numberOfPages = Math.ceil(users.length / usersPerPage); // count how many pages there will be
+    pages = Array.from({ length: numberOfPages }, (_, index) => {
+      const start = index * usersPerPage;
+      return users.slice(start, start + usersPerPage);
+    }); // display array of arrays
+    const currentPageUsers = pages[pageIndex] || []; // display only certain array of users
+    // loop and display user info
     let usersHtml = "";
-    read().forEach((u) => {
+    currentPageUsers.forEach((u) => {
       let temp = html;
       temp = temp.replaceAll("{{id}}", u.id);
       temp = temp.replaceAll("{{name}}", u.holderName);
@@ -139,7 +152,35 @@ window.addEventListener("load", () => {
     registerAction(withdrawModal, "withdraw");
     countTotalSum();
     countTotalUsers();
+    // If the current page is empty and not the first page, navigate to the previous page
+    if (currentPageUsers.length == 0 && pageIndex > 0) {
+      showList(pageIndex - 1); // Move to the previous page
+      index = pageIndex - 1; // the the index
+    }
   };
+
+  const displayButtons = (container, pages, activeIndex) => {
+    if (pages.length === 0) {
+      container.innerHTML = ""; // Clear container if there are no pages
+      return;
+    }
+    let btns = pages.map((_, pageIndex) => {
+      return `<button class="page-btn ${
+        activeIndex === pageIndex ? "active-btn" : "null "
+      } "data-index="${pageIndex}">
+        ${pageIndex + 1}
+        </button>`;
+    });
+    btns.push(`<button class="next-btn">next</button>`);
+    btns.unshift(`<button class="prev-btn">prev</button>`);
+    container.innerHTML = btns.join("");
+  };
+
+  const setupUI = () => {
+    showList(index);
+    displayButtons(btnContainer, pages, index);
+  };
+
   // shows in modal users name and surname
   const prepareModal = (modal, id) => {
     const user = read().find((p) => p.id == id);
@@ -209,7 +250,7 @@ window.addEventListener("load", () => {
     }
     storeData(data);
     hideModal(createModal);
-    showList();
+    setupUI();
     displayAlert(
       `The user named ${data.holderName} ${data.holderSurname} was created successfully`,
       "success"
@@ -231,7 +272,7 @@ window.addEventListener("load", () => {
         "danger"
       );
     }
-    showList();
+    setupUI();
   };
 
   const performTransaction = (actionType) => {
@@ -264,7 +305,7 @@ window.addEventListener("load", () => {
       }
 
       updateData(addId, user);
-      showList();
+      setupUI();
     } else {
       actionType === "deposit"
         ? (validation.innerText = "Please enter a valid number.")
@@ -302,7 +343,7 @@ window.addEventListener("load", () => {
 
   devBtn.addEventListener("click", () => {
     seed();
-    showList();
+    setupUI();
   });
 
   // find right modal to close
@@ -324,8 +365,29 @@ window.addEventListener("load", () => {
     performTransaction("withdraw")
   );
 
+  btnContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("btn-container")) return;
+    if (e.target.classList.contains("page-btn")) {
+      index = parseInt(e.target.dataset.index);
+    }
+    if (e.target.classList.contains("next-btn")) {
+      index++;
+      if (index > pages.length - 1) {
+        index = 0;
+      }
+    }
+    if (e.target.classList.contains("prev-btn")) {
+      index--;
+      if (index < 0) {
+        index = pages.length - 1;
+      }
+    }
+    setupUI();
+  });
+
   //showList();
-  setTimeout((_) => showList(), 2000);
+
+  setTimeout((_) => setupUI(), 2000);
 });
 
 const seedData = [
@@ -339,7 +401,7 @@ const seedData = [
     id: 2,
     holderName: "Meg",
     holderSurname: "Thomas",
-    amount: 1000,
+    amount: 0,
   },
   {
     id: 3,
@@ -351,7 +413,7 @@ const seedData = [
     id: 4,
     holderName: "Jake",
     holderSurname: "Park",
-    amount: 10,
+    amount: 0,
   },
   {
     id: 5,
@@ -363,7 +425,7 @@ const seedData = [
     id: 6,
     holderName: "Laurie",
     holderSurname: "Strode",
-    amount: 10000,
+    amount: 0,
   },
   {
     id: 7,
@@ -375,7 +437,7 @@ const seedData = [
     id: 8,
     holderName: "William",
     holderSurname: "Overbeck",
-    amount: 300,
+    amount: 0,
   },
   {
     id: 9,
